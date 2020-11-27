@@ -1,6 +1,5 @@
 <template>
   <q-page padding>
-
     <div
       class="column items-center"
       v-if="onlineEvent"
@@ -22,11 +21,15 @@
       <div
         v-if="session_has_ended !== true"
         class="text-h2 text-grey-8"
-      >{{ onlineEvent.title }}</div>
+      >
+        {{ onlineEvent.title }}
+      </div>
       <div
         v-if="session_has_ended !== true"
         class="text-h5 text-grey-6 q-mb-sm"
-      >{{ onlineEvent.description }}</div>
+      >
+        {{ onlineEvent.description }}
+      </div>
 
       <div
         class="full-width"

@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar v-if="user && (userIsIbo || userIsAdmin)">
+      <q-toolbar v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)">
         <q-btn
           flat
           dense
@@ -41,7 +41,7 @@
     </q-header>
 
     <q-drawer
-      v-if="user && (userIsIbo || userIsAdmin)"
+      v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)"
       v-model="leftDrawerOpen"
       show-if-above
       bordered
@@ -110,6 +110,10 @@ export default {
 
     userIsAdmin () {
       return this.user && this.user.role === 'admin'
+    },
+
+    userIsSuperAdmin () {
+      return this.user && this.user.role === 'super admin'
     },
 
     onlineEvents () {

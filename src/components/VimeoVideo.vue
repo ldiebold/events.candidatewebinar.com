@@ -1,14 +1,15 @@
 <template>
-  <VimeoPlayer
-    :video-id="videoId"
-    @loaded="onLoaded"
-    ref="video"
-    class="embed-container"
+  <q-video
+    beep
+    ref="qVideo"
+    :ratio="16/9"
+    class="full-width"
+    :src="`https://player.vimeo.com/video/${videoId}`"
   />
 </template>
 
 <script>
-import { vueVimeoPlayer } from 'vue-vimeo-player'
+import VimeoPlayer from '@vimeo/player'
 
 export default {
   props: {
@@ -18,8 +19,13 @@ export default {
     }
   },
 
-  components: {
-    VimeoPlayer: vueVimeoPlayer
+  mounted () {
+    const element = this.$refs.qVideo.$el.querySelector('iframe')
+
+    this.video = new VimeoPlayer(element)
+
+    this.video.ready()
+      .then(this.onLoad)
   },
 
   computed: {
@@ -27,12 +33,12 @@ export default {
   },
 
   methods: {
-    exec (command, ...params) {
-      return this.video[command](...params)
+    onLoad (data) {
+      this.$emit('ready', this.video)
     },
 
-    onLoaded () {
-      this.$emit('ready', this.$refs.video.player)
+    getPlayer () {
+      return this.video
     }
   },
 
@@ -44,26 +50,3 @@ export default {
 }
 
 </script>
-
-<style>
-.embed-container {
-  --video--width: 1296;
-  --video--height: 540;
-
-  position: relative;
-  padding-bottom: calc(var(--video--height) / var(--video--width) * 100%); /* 41.66666667% */
-  overflow: hidden;
-  max-width: 100%;
-  background: black;
-}
-
-.embed-container iframe,
-.embed-container object,
-.embed-container embed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-</style>

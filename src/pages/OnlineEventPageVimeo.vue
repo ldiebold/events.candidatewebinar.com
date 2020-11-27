@@ -1,48 +1,48 @@
 <template>
   <q-page padding>
-
     <div
       class="column items-center"
       v-if="onlineEvent"
     >
+      <div
+        class="text-h2 text-grey-8"
+      >
+        {{ onlineEvent.title }}
+      </div>
+      <div
+        class="text-h5 text-grey-6 q-mb-sm"
+      >
+        {{ onlineEvent.description }}
+      </div>
+
       <q-banner
-        class="bg-blue text-white full-width q-mb-lg"
+        class="bg-blue text-white full-width text-center q-mb-lg q-mt-lg"
         v-if="session_has_started === false && session_has_ended === false"
       >
         Session will start {{ timeUntilStartHumanized }}
       </q-banner>
 
       <q-banner
-        class="bg-grey-8 text-white full-width q-mb-lg"
+        class="bg-grey-8 text-white text-center full-width q-mb-lg q-mt-lg"
         v-if="session_has_ended === true"
       >
         Session has Ended
       </q-banner>
 
-      <div
-        v-if="session_has_ended !== true"
-        class="text-h2 text-grey-8"
-      >{{ onlineEvent.title }}</div>
-      <div
-        v-if="session_has_ended !== true"
-        class="text-h5 text-grey-6 q-mb-sm"
-      >{{ onlineEvent.description }}</div>
-        <!-- v-show="session_has_started === true && session_has_ended === false" -->
-          <!--  -->
-          <!-- v-if="videoId" -->
+      <!-- Video -->
       <div
         class="full-width"
-        style="max-width: 60%"
+        style="max-width: 80%"
+        v-if="session_has_started === true && session_has_ended === false"
       >
         <VimeoVideo
           ref="video"
           :video-id="videoId"
+          v-if="videoId"
           @ready="handleVideoReady"
         />
       </div>
     </div>
-
-    {{ currentVideoTime }}
   </q-page>
 </template>
 
@@ -65,12 +65,20 @@ export default {
 
   props: {
     onlineEventCandidate: {
-      required: false
+      required: false,
+      type: [Object, Boolean],
+      default: false
     }
   },
 
   data () {
     return {
+      videoStatusIntervals: null,
+
+      sessionTrackingIntervals: null,
+
+      duration: null,
+
       player: null,
 
       live_leeway: 10,
@@ -79,9 +87,9 @@ export default {
 
       video_visible: false,
 
-      session_has_started: null,
+      session_has_started: false,
 
-      session_has_ended: null,
+      session_has_ended: false,
 
       timeUntilStartHumanized: null
     }
@@ -89,7 +97,7 @@ export default {
 
   mounted () {
     const vm = this
-    setInterval(() => {
+    this.sessionTrackingIntervals = setInterval(() => {
       vm.handleSessionLive()
       vm.handleSessionIsOver()
       vm.timeUntilStartHumanized = this.$dayjs().to(this.onlineEvent.start_time)
@@ -101,33 +109,70 @@ export default {
       console.log(...params)
     },
 
+    handleVideoEnded () {
+      this.session_has_ended = true
+    },
+
     updateCurrentVideoTime () {
-      this.player.getCurrentTime()
+      this.$refs.video.getPlayer().getCurrentTime()
         .then(seconds => {
           this.currentVideoTime = seconds
         })
     },
 
     handleVideoReady (player) {
-      this.player = player
-      this.player.play()
-      const vm = this
+      player.getDuration()
+        .then(this.handleGotDuration)
+        .then(duration => {
+          this.$refs.video.getPlayer().on('play', data => {
+            this.duration = data.duration
+          })
 
-      vm.setVideoInitialPlayTime()
+          this.$refs.video.getPlayer().on('end', data => {
+            this.handleVideoEnded()
+          })
 
-      setInterval(() => {
-        vm.updateCurrentVideoTime()
-        vm.handleVideoOutOfPlayTime()
-        vm.playVideoIfPaused()
-      }, 500)
+          this.$refs.video.getPlayer().on('pause', data => {
+            this.$refs.video.getPlayer().play()
+          })
+
+          this.$refs.video.getPlayer().play()
+          const vm = this
+
+          vm.setVideoInitialPlayTime()
+
+          this.videoStatusIntervals = setInterval(() => {
+            vm.updateCurrentVideoTime()
+            vm.handleVideoOutOfPlayTime()
+            // vm.playVideoIfPaused()
+          }, 300)
+        })
+    },
+
+    handleGotDuration (duration) {
+      this.duration = duration
+    },
+
+    clearIntervals () {
+      clearInterval(this.videoStatusIntervals)
+      clearInterval(this.sessionTrackingIntervals)
     },
 
     getSessionIsOver () {
-      return Math.sign(dayjs(this.onlineEvent.end_time).diff(new Date(), 'seconds')) === -1
+      if (Math.sign(dayjs(this.onlineEvent.end_time).diff(new Date(), 'seconds')) === -1) {
+        return true
+      }
+      if (this.duration && Math.sign(dayjs(this.onlineEvent.start_time).add(this.duration + this.live_leeway, 'second').diff(new Date(), 'seconds')) === -1) {
+        return true
+      }
+      return false
     },
 
     handleSessionIsOver () {
       this.session_has_ended = this.getSessionIsOver()
+      if (this.session_has_ended) {
+        this.clearIntervals()
+      }
     },
 
     handleSessionLive () {
@@ -152,8 +197,13 @@ export default {
     },
 
     setVideoInitialPlayTime () {
+      if (this.duration && Math.sign(dayjs(this.onlineEvent.start_time).add(this.duration, 'second').diff(new Date(), 'seconds')) === -1) {
+        this.session_has_ended = true
+        return
+      }
+
       if (this.getSessionIsLive()) {
-        this.player.setCurrentTime(this.getTimeSinceStart())
+        this.$refs.video.getPlayer().setCurrentTime(this.getTimeSinceStart())
       }
     },
 
@@ -163,13 +213,23 @@ export default {
       }
 
       if (this.getVideoIsOutOfLeeway()) {
-        this.player.setCurrentTime(this.getTimeSinceStart())
+        if (this.$refs.video.getPlayer().setCurrentTime.getCurrentTime >= (this.duration - 1)) {
+          this.session_has_ended = true
+        } else {
+          this.$refs.video.getPlayer().setCurrentTime(this.getTimeSinceStart())
+        }
       }
     },
 
-    playVideoIfPaused () {
-      this.player.play()
-    },
+    // playVideoIfPaused () {
+    //   this.$refs.video.getPlayer().getPaused()
+    //     .then(paused => {
+    //       if (paused) {
+    //         console.log('playing')
+    //         this.$refs.video.getPlayer().play()
+    //       }
+    //     })
+    // },
 
     getTimeSinceStart () {
       const difference = dayjs(new Date()).diff(this.onlineEvent.start_time, 'second')
