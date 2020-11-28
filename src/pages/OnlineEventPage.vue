@@ -66,7 +66,9 @@ export default {
 
   props: {
     onlineEventCandidate: {
-      required: false
+      required: false,
+      type: [Object, Boolean],
+      default: false
     }
   },
 

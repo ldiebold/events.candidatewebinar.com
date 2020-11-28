@@ -11,7 +11,8 @@
       <div
         class="wistia_responsive_wrapper"
         style="height:100%;left:0;position:absolute;top:0;width:100%;"
-      ><iframe
+      >
+        <iframe
           :src="`https://fast.wistia.net/embed/iframe/${videoId}?videoFoam=true`"
           title="Quick overview (How we're gonna make this happen!) Video"
           allowtransparency="true"
@@ -21,7 +22,8 @@
           name="wistia_embed"
           width="100%"
           height="100%"
-        ></iframe></div>
+        />
+      </div>
     </div>
   </q-card>
 </template>

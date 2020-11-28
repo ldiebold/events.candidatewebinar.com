@@ -2,11 +2,9 @@
   <OnlineEventPage
     v-if="closest_online_event"
     :online-event-candidate="closest_online_event"
-  >
+  />
 
-  </OnlineEventPage>
-
-  <div v-else></div>
+  <div v-else />
 </template>
 
 <script>

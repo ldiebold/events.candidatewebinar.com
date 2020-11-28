@@ -4,7 +4,6 @@
  */
 require('dotenv').config()
 const env = process.env
-const path = require('path')
 const fs = require('fs')
 
 // Configuration for your app
@@ -113,7 +112,7 @@ module.exports = function (/* ctx */) {
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    animations: ['fadeIn', 'fadeOut'],
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
