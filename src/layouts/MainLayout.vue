@@ -12,7 +12,7 @@
             flat
             dense
             round
-            icon="menu"
+            icon="mdi-menu"
             aria-label="Menu"
             @click="leftDrawerOpen = !leftDrawerOpen"
           />
@@ -21,9 +21,17 @@
             Team Pickersgill Events
           </q-toolbar-title>
 
+          <MSelectAppButton
+            icon="mdi-apps"
+            dense
+            flat
+            current-app-name="events"
+            :user="user"
+          />
+
           <q-btn
             flat
-            icon="logout"
+            icon="mdi-logout"
             round
             @click="handleLogout"
           />
@@ -39,7 +47,7 @@
 
           <q-btn
             flat
-            icon="logout"
+            icon="mdi-logout"
             round
             @click="handleLogout"
           />
@@ -87,10 +95,11 @@
 </template>
 
 <script>
+import { MSelectAppButton } from '@ldiebold/quasar-ui-process-model-components/src'
 
 export default {
   name: 'MainLayout',
-  components: {},
+  components: { MSelectAppButton },
   methods: {
     handleLogout () {
       this.visible = false
@@ -105,8 +114,7 @@ export default {
   },
   computed: {
     user () {
-      const currentUserId = this.$store.state.entities.users.current_user_id
-      return this.$MUser.find(currentUserId)
+      return this.$MUser.getSessionUser()
     },
 
     userIsIbo () {

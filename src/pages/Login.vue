@@ -9,7 +9,7 @@
         class="q-mt-sm q-ml-sm"
         flat
         round
-        icon="home"
+        icon="mdi-home"
         type="a"
         :href="homeUrl"
         color="grey-5"
