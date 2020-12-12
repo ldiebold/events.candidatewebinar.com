@@ -24,7 +24,8 @@ module.exports = function (/* ctx */) {
     boot: [
       'registerModelAliases',
       'axios',
-      'dayjs'
+      'dayjs',
+      'echo'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css

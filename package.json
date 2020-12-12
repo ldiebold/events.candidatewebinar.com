@@ -10,8 +10,8 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@ldiebold/process-orm-classes": "^1.0.0",
     "@agripath/quasar-ui-base-components": "^1.0.0",
+    "@ldiebold/process-orm-classes": "^1.0.0",
     "@quasar/extras": "^1.0.0",
     "@vimeo/player": "^2.14.1",
     "@vuex-orm/core": "^0.36.3",
@@ -19,6 +19,8 @@
     "core-js": "^3.6.5",
     "dayjs": "^1.9.4",
     "js-video-url-parser": "^0.4.2",
+    "laravel-echo": "^1.9.0",
+    "pusher-js": "^7.0.2",
     "quasar": "^1.0.0",
     "vue-vimeo-player": "^0.1.0"
   },

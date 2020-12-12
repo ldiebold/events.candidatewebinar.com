@@ -19,6 +19,25 @@ export default {
     }
   },
 
+  mounted () {
+    setTimeout(() => {
+      console.log('call it')
+      this.$echo.join('online')
+        .here(() => {
+          console.log('here')
+        })
+        .joining(() => {
+          console.log('joining')
+        })
+        .leaving(() => {
+          console.log('leaving')
+        })
+        .listen('NewMessage', (e) => {
+          console.log('New Message')
+        })
+    }, 3000)
+  },
+
   components: {
     OnlineEventPage
   },

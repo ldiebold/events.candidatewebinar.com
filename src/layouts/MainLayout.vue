@@ -153,22 +153,7 @@ export default {
     return {
       leftDrawerOpen: false,
 
-      visible: false,
-
-      menuItems: [
-        {
-          icon: 'person',
-          label: 'Candidates',
-          description: 'manage candidate accounts',
-          to: '/candidates'
-        },
-        {
-          icon: 'calendar',
-          label: 'Events',
-          description: 'create and edit events',
-          to: '/events'
-        }
-      ]
+      visible: false
     }
   }
 }
