@@ -15,11 +15,11 @@ export default ({ Vue, router }) => {
 function registerEcho (Vue) {
   Vue.prototype.$echo = new Echo({
     broadcaster: 'pusher',
-    key: 'cfxsXJ6Y6SCbVHpekPaf',
-    httpsHost: 'api.process.test',
-    wsHost: 'socket.process.test',
-    wssHost: 'socket.process.test',
-    cluster: 'mt1',
+    key: process.env.PUSHER_KEY,
+    httpsHost: process.env.ECHO_HTTPS_HOST,
+    wsHost: process.env.ECHO_WS_HOST,
+    wssHost: process.env.ECHO_WSS_HOST,
+    cluster: process.env.ECHO_CLUSTER,
     encrypted: true,
     authorizer: (channel, options) => {
       return {
