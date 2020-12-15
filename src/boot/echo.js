@@ -24,7 +24,7 @@ function registerEcho (Vue) {
     authorizer: (channel, options) => {
       return {
         authorize: (socketId, callback) => {
-          axios.post('https://api.process.test/api/broadcasting/auth', {
+          axios.post(`${process.env.API_URL}/api/broadcasting/auth`, {
             socket_id: socketId,
             channel_name: channel.name
           })
