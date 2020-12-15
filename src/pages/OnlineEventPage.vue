@@ -87,6 +87,8 @@ export default {
   },
 
   mounted () {
+    this.joinPresenceChannel()
+
     const vm = this
     setInterval(() => {
       vm.handleSessionLive()
@@ -176,6 +178,23 @@ export default {
       const behindLeeway = currentVideoTime < this.getStartTimeMinusLeeway()
 
       return pastLeeway || behindLeeway
+    },
+
+    joinPresenceChannel () {
+      console.log('joining')
+      this.$echo.join(`App.Models.User.${this.user.upline_id}.Online.Event.${this.online_event_id}`)
+        .here((data) => {
+          this.$MUser.insertOrUpdate({ data })
+        })
+        .joining((data) => {
+          this.$MUser.insert({ data })
+        })
+        .leaving((data) => {
+          this.$MUser.delete(data.id)
+        })
+        .listen('NewMessage', (e) => {
+          console.log('message', e)
+        })
     }
   },
 
@@ -190,6 +209,10 @@ export default {
       }
 
       return null
+    },
+
+    user () {
+      return this.$MUser.getSessionUser()
     }
   }
 }

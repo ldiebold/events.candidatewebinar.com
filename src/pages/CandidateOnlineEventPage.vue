@@ -1,5 +1,5 @@
 <template>
-  <OnlineEventPage
+  <OnlineEventPageVimeo
     v-if="closest_online_event"
     :online-event-candidate="closest_online_event"
   />
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import OnlineEventPage from 'pages/OnlineEventPage.vue'
+import OnlineEventPageVimeo from 'pages/OnlineEventPageVimeo.vue'
 
 export default {
   name: 'PageIndex',
@@ -20,26 +20,11 @@ export default {
   },
 
   mounted () {
-    setTimeout(() => {
-      console.log('call it')
-      this.$echo.join('online')
-        .here(() => {
-          console.log('here')
-        })
-        .joining(() => {
-          console.log('joining')
-        })
-        .leaving(() => {
-          console.log('leaving')
-        })
-        .listen('NewMessage', (e) => {
-          console.log('New Message')
-        })
-    }, 3000)
+
   },
 
   components: {
-    OnlineEventPage
+    OnlineEventPageVimeo
   },
 
   computed: {

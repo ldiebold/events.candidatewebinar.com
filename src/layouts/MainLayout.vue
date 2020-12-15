@@ -5,7 +5,7 @@
     leave-active-class="animated fadeOut"
     v-if="visible"
   >
-    <q-layout view="lHh Lpr lFf">
+    <q-layout view="lHr Lpr lFf">
       <q-header elevated>
         <q-toolbar v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)">
           <q-btn
@@ -18,7 +18,7 @@
           />
 
           <q-toolbar-title>
-            Team Pickersgill Events
+            Events
           </q-toolbar-title>
 
           <MSelectAppButton
@@ -30,10 +30,25 @@
           />
 
           <q-btn
+            class="q-ml-sm"
             flat
             icon="mdi-logout"
             round
             @click="handleLogout"
+          />
+
+          <q-btn
+            :class="{
+              'q-ml-sm': true,
+              'bg-white': rightDrawerOpen,
+              'text-grey-8': rightDrawerOpen
+            }"
+            flat
+            dense
+            round
+            icon="mdi-account-group"
+            aria-label="Menu"
+            @click="rightDrawerOpen = !rightDrawerOpen"
           />
         </q-toolbar>
 
@@ -42,7 +57,7 @@
           v-if="user && userIsCandidate"
         >
           <q-toolbar-title>
-            Team Pickersgill Events
+            Events
           </q-toolbar-title>
 
           <q-btn
@@ -83,6 +98,27 @@
                 {{ onlineEvent.description }}
               </q-item-label>
             </q-item-section>
+          </q-item>
+        </q-list>
+      </q-drawer>
+
+      <q-drawer
+        v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)"
+        side="right"
+        v-model="rightDrawerOpen"
+        show-if-above
+        bordered
+        content-class="bg-grey-1"
+      >
+        <q-toolbar class="bg-primary text-white">
+          <q-toolbar-title>Candidates Present</q-toolbar-title>
+        </q-toolbar>
+        <q-list>
+          <q-item
+            v-for="candidate in $MUser.query().where('inOnlineEvent', true).get()"
+            :key="candidate.id"
+          >
+            {{ candidate.name }}
           </q-item>
         </q-list>
       </q-drawer>
@@ -139,6 +175,8 @@ export default {
   },
 
   mounted () {
+    this.$MTutorialVideo.$get()
+
     if (!this.onlineEvents.length) {
       this.fetchingEvents = true
       this.$MOnlineEvent.$get()
@@ -152,6 +190,8 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
+
+      rightDrawerOpen: false,
 
       visible: false
     }

@@ -71,6 +71,19 @@ export default {
     }
   },
 
+  watch: {
+    '$route.params.online_event_id' (newOnlineEventId, oldOnlineEventId) {
+      const userIdForChannel = this.user.role === 'candidate'
+        ? this.user.upline_id : this.user.id
+
+      this.$echo.leave(`App.Models.User.${userIdForChannel}.Online.Event.${oldOnlineEventId}`)
+
+      this.clearIntervals()
+
+      this.startObservations()
+    }
+  },
+
   data () {
     return {
       videoStatusIntervals: null,
@@ -96,15 +109,48 @@ export default {
   },
 
   mounted () {
-    const vm = this
-    this.sessionTrackingIntervals = setInterval(() => {
-      vm.handleSessionLive()
-      vm.handleSessionIsOver()
-      vm.timeUntilStartHumanized = this.$dayjs().to(this.onlineEvent.start_time)
-    }, 500)
+    this.$MUser.$getCandidates()
+    this.startObservations()
   },
 
   methods: {
+    startObservations () {
+      this.joinPresenceChannel()
+
+      const vm = this
+      this.sessionTrackingIntervals = setInterval(() => {
+        vm.handleSessionLive()
+        vm.handleSessionIsOver()
+        vm.timeUntilStartHumanized = this.$dayjs().to(this.onlineEvent.start_time)
+      }, 500)
+    },
+
+    joinPresenceChannel () {
+      this.$MUser.update({
+        where: () => true,
+        data: { inOnlineEvent: false }
+      })
+
+      const userIdForChannel = this.user.role === 'candidate'
+        ? this.user.upline_id : this.user.id
+
+      this.$echo.join(`App.Models.User.${userIdForChannel}.Online.Event.${this.onlineEvent.id}`)
+        .here((data) => {
+          this.$MUser.insertOrUpdate({ data })
+        })
+        .joining((data) => {
+          this.$MUser.insertOrUpdate({ data })
+        })
+        .leaving((data) => {
+          this.$MUser.update({
+            where: data.id,
+            data: { inOnlineEvent: false }
+          })
+        })
+        .listen('NewMessage', (e) => {
+        })
+    },
+
     logger (...params) {
       console.log(...params)
     },
@@ -263,7 +309,12 @@ export default {
       }
 
       return null
+    },
+
+    user () {
+      return this.$MUser.getSessionUser()
     }
   }
+
 }
 </script>
