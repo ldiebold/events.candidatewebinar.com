@@ -115,7 +115,7 @@ export default {
 
   methods: {
     startObservations () {
-      this.joinPresenceChannel()
+      // this.joinPresenceChannel()
 
       const vm = this
       this.sessionTrackingIntervals = setInterval(() => {
