@@ -4,12 +4,12 @@ import axios from 'axios'
 window.Pusher = require('pusher-js')
 
 export default ({ Vue, router }) => {
-  router.beforeHooks.push((to, from, next) => {
-    if (Vue.prototype.$MUser.getSessionUser()) {
-      registerEcho(Vue)
-    }
-    next()
-  })
+  // router.beforeHooks.push((to, from, next) => {
+  //   if (Vue.prototype.$MUser.getSessionUser()) {
+  //     registerEcho(Vue)
+  //   }
+  //   next()
+  // })
 }
 
 function registerEcho (Vue) {

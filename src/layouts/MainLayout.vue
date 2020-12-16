@@ -102,7 +102,7 @@
         </q-list>
       </q-drawer>
 
-      <q-drawer
+      <!-- <q-drawer
         v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)"
         side="right"
         v-model="rightDrawerOpen"
@@ -121,7 +121,7 @@
             {{ candidate.name }}
           </q-item>
         </q-list>
-      </q-drawer>
+      </q-drawer> -->
 
       <q-page-container>
         <router-view />

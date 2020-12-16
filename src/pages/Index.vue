@@ -18,19 +18,19 @@ export default {
   },
 
   mounted () {
-    this.$echo.join('online')
-      .here((data) => {
-        this.$MUser.insertOrUpdate({ data })
-      })
-      .joining((data) => {
-        this.$MUser.insert({ data })
-      })
-      .leaving((data) => {
-        this.$MUser.delete(data.id)
-      })
-      .listen('NewMessage', (e) => {
-        console.log('message', e)
-      })
+    // this.$echo.join('online')
+    //   .here((data) => {
+    //     this.$MUser.insertOrUpdate({ data })
+    //   })
+    //   .joining((data) => {
+    //     this.$MUser.insert({ data })
+    //   })
+    //   .leaving((data) => {
+    //     this.$MUser.delete(data.id)
+    //   })
+    //   .listen('NewMessage', (e) => {
+    //     console.log('message', e)
+    //   })
   },
 
   components: {
