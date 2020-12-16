@@ -73,10 +73,10 @@ export default {
 
   watch: {
     '$route.params.online_event_id' (newOnlineEventId, oldOnlineEventId) {
-      const userIdForChannel = this.user.role === 'candidate'
-        ? this.user.upline_id : this.user.id
+      // const userIdForChannel = this.user.role === 'candidate'
+      //   ? this.user.upline_id : this.user.id
 
-      this.$echo.leave(`App.Models.User.${userIdForChannel}.Online.Event.${oldOnlineEventId}`)
+      // this.$echo.leave(`App.Models.User.${userIdForChannel}.Online.Event.${oldOnlineEventId}`)
 
       this.clearIntervals()
 

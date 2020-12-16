@@ -87,7 +87,7 @@ export default {
   },
 
   mounted () {
-    this.joinPresenceChannel()
+    // this.joinPresenceChannel()
 
     const vm = this
     setInterval(() => {
