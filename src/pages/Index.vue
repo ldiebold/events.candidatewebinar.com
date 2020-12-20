@@ -1,7 +1,5 @@
 <template>
-  <div>
-    Total Online: {{ onlineUsers.length }}
-  </div>
+  <div />
 </template>
 
 <script>
@@ -38,11 +36,11 @@ export default {
   },
 
   computed: {
-    onlineUsers () {
-      return this.$MUser.query()
-        .where('inOnlineEvent', true)
-        .get()
-    }
+    // onlineUsers () {
+    //   return this.$MUser.query()
+    //     .where('inOnlineEvent', true)
+    //     .get()
+    // }
   },
 
   methods: {
