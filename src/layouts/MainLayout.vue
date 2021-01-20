@@ -7,7 +7,7 @@
   >
     <q-layout view="lHr Lpr lFf">
       <q-header elevated>
-        <q-toolbar v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)">
+        <q-toolbar v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin || userIsCandidate)">
           <q-btn
             flat
             dense
@@ -70,7 +70,6 @@
       </q-header>
 
       <q-drawer
-        v-if="user && (userIsIbo || userIsAdmin || userIsSuperAdmin)"
         v-model="leftDrawerOpen"
         show-if-above
         bordered
@@ -175,7 +174,9 @@ export default {
   },
 
   mounted () {
-    this.$MTutorialVideo.$get()
+    if (!this.userIsCandidate) {
+      this.$MTutorialVideo.$get()
+    }
 
     if (!this.onlineEvents.length) {
       this.fetchingEvents = true

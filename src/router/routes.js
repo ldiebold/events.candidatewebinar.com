@@ -1,4 +1,4 @@
-import User from '../models/User'
+// import User from '../models/User'
 
 const routes = [
   {
@@ -7,17 +7,17 @@ const routes = [
     children: [
       {
         path: '',
-        component: () => import('pages/Index.vue'),
-        beforeEnter (to, from, next) {
-          handleIsCandidate(next)
-        }
+        component: () => import('pages/Index.vue')
+        // beforeEnter (to, from, next) {
+        //   handleIsCandidate(next)
+        // }
       },
       {
         path: 'event/:online_event_id',
-        component: () => import('pages/OnlineEventPageVimeo.vue'),
-        beforeEnter (to, from, next) {
-          handleIsCandidate(next)
-        }
+        component: () => import('pages/OnlineEventPageVimeo.vue')
+        // beforeEnter (to, from, next) {
+        //   handleIsCandidate(next)
+        // }
       },
       {
         path: 'candidate',
@@ -47,11 +47,11 @@ const routes = [
 
 export default routes
 
-function handleIsCandidate (next) {
-  const user = User.getSessionUser() || User.query().first()
-  if (user.role === 'candidate') {
-    next('candidate')
-  } else {
-    return next()
-  }
-}
+// function handleIsCandidate (next) {
+//   const user = User.getSessionUser() || User.query().first()
+//   if (user.role === 'candidate') {
+//     next('candidate')
+//   } else {
+//     return next()
+//   }
+// }
