@@ -1,11 +1,14 @@
 <template>
   <q-page padding>
     <div
-      class="column items-center"
+      class="column items-center q-mt-md"
       v-if="onlineEvent"
     >
       <div
-        class="text-h2 text-grey-8"
+        :class="[
+          $q.platform.is.mobile ? 'text-h4' : 'text-h2',
+          'text-grey-8'
+        ]"
       >
         {{ onlineEvent.title }}
       </div>
