@@ -22,6 +22,7 @@
           </q-toolbar-title>
 
           <MSelectAppButton
+            v-if="!userIsCandidate"
             icon="mdi-apps"
             dense
             flat
@@ -37,7 +38,7 @@
             @click="handleLogout"
           />
 
-          <q-btn
+          <!-- <q-btn
             :class="{
               'q-ml-sm': true,
               'bg-white': rightDrawerOpen,
@@ -49,10 +50,10 @@
             icon="mdi-account-group"
             aria-label="Menu"
             @click="rightDrawerOpen = !rightDrawerOpen"
-          />
+          /> -->
         </q-toolbar>
 
-        <q-toolbar
+        <!-- <q-toolbar
           class="bg-white text-grey-9"
           v-if="user && userIsCandidate"
         >
@@ -66,7 +67,7 @@
             round
             @click="handleLogout"
           />
-        </q-toolbar>
+        </q-toolbar> -->
       </q-header>
 
       <q-drawer
@@ -82,6 +83,10 @@
           >
             Online Events
           </q-item-label>
+
+          <q-item v-if="!onlineEvents.length">
+            Currently, this account does not have permission to view any online events.
+          </q-item>
 
           <q-item
             v-for="onlineEvent in onlineEvents"
