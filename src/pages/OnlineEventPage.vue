@@ -58,7 +58,7 @@ var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
 export default {
-  name: 'EventPage',
+  name: 'OnlineEventPage',
 
   components: {
     WistiaVideo

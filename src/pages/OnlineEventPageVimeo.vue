@@ -1,5 +1,8 @@
 <template>
-  <q-page padding>
+  <q-page
+    :key="$route.params.online_event_id"
+    padding
+  >
     <div
       class="column items-center q-mt-md"
       v-if="onlineEvent"
@@ -32,11 +35,19 @@
         Session has Ended
       </q-banner>
 
+      <q-btn
+        v-if="session_has_started === true && session_has_ended === false && !hasClickedJoin"
+        @click="hasClickedJoin = true"
+        class="text-center"
+        label="join"
+        color="primary"
+      />
+
       <!-- Video -->
       <div
         class="full-width"
         style="max-width: 80%"
-        v-if="session_has_started === true && session_has_ended === false"
+        v-if="session_has_started === true && session_has_ended === false && hasClickedJoin"
       >
         <VimeoVideo
           ref="video"
@@ -60,7 +71,7 @@ var relativeTime = require('dayjs/plugin/relativeTime')
 dayjs.extend(relativeTime)
 
 export default {
-  name: 'EventPage',
+  name: 'OnlineEventPageVimeo',
 
   components: {
     VimeoVideo
@@ -80,34 +91,11 @@ export default {
       //   ? this.user.upline_id : this.user.id
 
       // this.$echo.leave(`App.Models.User.${userIdForChannel}.Online.Event.${oldOnlineEventId}`)
+      this.hasClickedJoin = false
 
       this.clearIntervals()
 
       this.startObservations()
-    }
-  },
-
-  data () {
-    return {
-      videoStatusIntervals: null,
-
-      sessionTrackingIntervals: null,
-
-      duration: null,
-
-      player: null,
-
-      live_leeway: 10,
-
-      currentVideoTime: 0,
-
-      video_visible: false,
-
-      session_has_started: false,
-
-      session_has_ended: false,
-
-      timeUntilStartHumanized: null
     }
   },
 
@@ -125,7 +113,7 @@ export default {
         vm.handleSessionLive()
         vm.handleSessionIsOver()
         vm.timeUntilStartHumanized = this.$dayjs().to(this.onlineEvent.start_time)
-      }, 500)
+      }, 300)
     },
 
     joinPresenceChannel () {
@@ -317,7 +305,32 @@ export default {
     user () {
       return this.$MUser.getSessionUser()
     }
-  }
+  },
 
+  data () {
+    return {
+      videoStatusIntervals: null,
+
+      sessionTrackingIntervals: null,
+
+      duration: null,
+
+      player: null,
+
+      live_leeway: 10,
+
+      currentVideoTime: 0,
+
+      video_visible: false,
+
+      session_has_started: false,
+
+      session_has_ended: true,
+
+      timeUntilStartHumanized: null,
+
+      hasClickedJoin: false
+    }
+  }
 }
 </script>
