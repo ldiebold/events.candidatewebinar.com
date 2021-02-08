@@ -181,7 +181,6 @@ export default {
     },
 
     joinPresenceChannel () {
-      console.log('joining')
       this.$echo.join(`App.Models.User.${this.user.upline_id}.Online.Event.${this.online_event_id}`)
         .here((data) => {
           this.$MUser.insertOrUpdate({ data })

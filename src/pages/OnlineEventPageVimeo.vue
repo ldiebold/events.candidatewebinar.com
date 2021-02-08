@@ -142,10 +142,6 @@ export default {
         })
     },
 
-    logger (...params) {
-      console.log(...params)
-    },
-
     handleVideoEnded () {
       this.session_has_ended = true
     },
@@ -257,16 +253,6 @@ export default {
         }
       }
     },
-
-    // playVideoIfPaused () {
-    //   this.$refs.video.getPlayer().getPaused()
-    //     .then(paused => {
-    //       if (paused) {
-    //         console.log('playing')
-    //         this.$refs.video.getPlayer().play()
-    //       }
-    //     })
-    // },
 
     getTimeSinceStart () {
       const difference = dayjs(new Date()).diff(this.onlineEvent.start_time, 'second')
