@@ -24,6 +24,7 @@
     "laravel-echo": "^1.9.0",
     "pusher-js": "^7.0.2",
     "quasar": "^1.0.0",
+    "vue-automatic-import-loader": "^1.0.0",
     "vue-vimeo-player": "^0.1.0"
   },
   "devDependencies": {

@@ -55,6 +55,16 @@
           v-if="videoId"
           @ready="handleVideoReady"
         />
+
+        <!-- <BDialogButton
+          label="Click HERE if the video won't play"
+          no-caps
+          flat
+        >
+          <q-card>
+            Test
+          </q-card>
+        </BDialogButton> -->
       </div>
     </div>
   </q-page>

@@ -5,6 +5,7 @@
     :ratio="16/9"
     class="full-width"
     :src="`https://player.vimeo.com/video/${videoId}`"
+    allow="autoplay"
   />
 </template>
 
