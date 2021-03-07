@@ -66,6 +66,10 @@
           </q-card>
         </BDialogButton> -->
       </div>
+
+      <div v-show="session_has_started === true && session_has_ended === false && hasClickedJoin">
+        Video Not playing? Try clicking/touching the screen
+      </div>
     </div>
   </q-page>
 </template>
