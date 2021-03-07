@@ -110,7 +110,9 @@ export default {
   },
 
   mounted () {
-    this.$MUser.$getCandidates()
+    if (this.user) {
+      this.$MUser.$getCandidates()
+    }
     this.startObservations()
   },
 

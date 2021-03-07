@@ -8,16 +8,10 @@ const routes = [
       {
         path: '',
         component: () => import('pages/Index.vue')
-        // beforeEnter (to, from, next) {
-        //   handleIsCandidate(next)
-        // }
       },
       {
         path: 'event/:online_event_id',
         component: () => import('pages/OnlineEventPageVimeo.vue')
-        // beforeEnter (to, from, next) {
-        //   handleIsCandidate(next)
-        // }
       },
       {
         path: 'candidate',
@@ -33,6 +27,16 @@ const routes = [
         path: '/login',
         name: 'login',
         component: () => import('pages/Login.vue')
+      },
+      {
+        path: 'event/private/:online_event_public_uid',
+        name: 'public-link',
+        component: () => import('pages/PublicLinkPage.vue')
+      },
+      {
+        path: 'event/private/:online_event_public_uid/:online_event_id',
+        name: 'public-link.online_event',
+        component: () => import('pages/PublicLinkPage.vue')
       }
     ]
   },

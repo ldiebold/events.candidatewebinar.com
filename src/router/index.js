@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import User from '../models/User'
 
 import routes from './routes'
+import publicRoutes from './publicRoutes'
 
 import { AuthorizeRoutes } from 'quasar-ui-sanctum'
 
@@ -42,7 +43,7 @@ function beforeEach (to, from, next, context) {
     login_endpoint: '/login',
     logout_endpoint: '/logout',
     errorNotifier: () => alert('error'),
-    public_routes: ['/logout', '/login'],
+    public_routes: publicRoutes,
     home_endpoint: '/'
   }
 
